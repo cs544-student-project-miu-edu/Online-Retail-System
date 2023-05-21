@@ -10,8 +10,7 @@ import java.util.List;
 
 @Entity
 @Data
-public class Customer extends Person {
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    @JsonBackReference(value="customer-offer")
-    List<Offer> offers;
+public class Customer {
+
+
 }
