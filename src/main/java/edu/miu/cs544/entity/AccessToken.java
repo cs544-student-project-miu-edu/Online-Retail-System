@@ -1,4 +1,4 @@
-package edu.miu.cs544.api.entity;
+package edu.miu.cs544.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

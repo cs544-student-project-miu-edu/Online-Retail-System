@@ -1,4 +1,4 @@
-package edu.miu.cs544.api.controller;
+package edu.miu.cs544.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

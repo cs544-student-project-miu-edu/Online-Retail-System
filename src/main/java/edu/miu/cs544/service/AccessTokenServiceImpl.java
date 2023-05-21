@@ -1,6 +1,6 @@
-package edu.miu.cs544.api.service;
+package edu.miu.cs544.service;
 
-import edu.miu.cs544.api.repository.AccessTokenRepository;
+import edu.miu.cs544.repository.AccessTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

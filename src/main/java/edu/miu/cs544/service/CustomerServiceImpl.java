@@ -1,8 +1,10 @@
-package edu.miu.cs544.api.service;
+package edu.miu.cs544.service;
 
-import edu.miu.cs544.api.dto.CustomerDto;
+import edu.miu.cs544.dto.CustomerDto;
 import edu.miu.cs544.api.entity.*;
 import edu.miu.cs544.api.repository.*;
+import edu.miu.cs544.entity.Customer;
+import edu.miu.cs544.repository.CustomerRepository;
 import edu.miu.cs545.api.dto.*;
 import edu.miu.cs545.api.entity.*;
 import edu.miu.cs545.api.repository.*;

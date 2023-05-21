@@ -1,4 +1,4 @@
-package edu.miu.cs544.api.dto;
+package edu.miu.cs544.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package edu.miu.cs544.api.util;
+package edu.miu.cs544.util;
 
-import edu.miu.cs544.api.service.AccessTokenService;
+import edu.miu.cs544.service.AccessTokenService;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;

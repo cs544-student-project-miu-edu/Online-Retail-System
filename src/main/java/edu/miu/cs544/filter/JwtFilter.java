@@ -1,6 +1,6 @@
-package edu.miu.cs544.api.filter;
+package edu.miu.cs544.filter;
 
-import edu.miu.cs544.api.util.JwtUtil;
+import edu.miu.cs544.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

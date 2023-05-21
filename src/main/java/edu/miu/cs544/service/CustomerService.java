@@ -1,6 +1,6 @@
-package edu.miu.cs544.api.service;
+package edu.miu.cs544.service;
 
-import edu.miu.cs544.api.dto.CustomerDto;
+import edu.miu.cs544.dto.CustomerDto;
 
 import java.util.List;
 

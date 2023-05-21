@@ -1,4 +1,4 @@
-package edu.miu.cs544.api.controller;
+package edu.miu.cs544.controller;
 
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

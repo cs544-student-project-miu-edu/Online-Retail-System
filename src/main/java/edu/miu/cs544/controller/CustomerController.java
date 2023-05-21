@@ -1,15 +1,12 @@
-package edu.miu.cs544.api.controller;
+package edu.miu.cs544.controller;
 
-import edu.miu.cs544.api.dto.CustomerDto;
-import edu.miu.cs544.api.service.CustomerService;
+import edu.miu.cs544.dto.CustomerDto;
+import edu.miu.cs544.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 @RestController
