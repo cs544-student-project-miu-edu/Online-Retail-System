@@ -1,0 +1,30 @@
+server:
+  port: 9000
+spring:
+  security:
+    user:
+      name: user
+      password: pass
+  application:
+    name: spring-datarest-server
+  datasource:
+    url: jdbc:sqlserver://cs544.cs.miu.edu:1433;databaseName=AdventureWorks2019;trustServerCertificate=true
+    username: adventure
+    password: AdventureWorks
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    hikari:
+      maximumPoolSize: 10
+  jpa:
+    show-sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.SQLServerDialect
+
+logging:
+  file:
+    name: /CS544/Logging/${spring.application.name}/logs
