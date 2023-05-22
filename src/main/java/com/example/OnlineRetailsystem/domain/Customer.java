@@ -38,11 +38,11 @@ public class Customer {
     @JoinColumn(name = "customerID")
     private List<CreditCard> creditCards = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
-    List<Review> reviews = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    List<Order> orderList = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
+//    List<Review> reviews = new ArrayList<>();
+//
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+//    List<Order> orderList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private CustomerType customerType;

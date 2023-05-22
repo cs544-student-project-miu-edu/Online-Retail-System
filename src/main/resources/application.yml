@@ -8,10 +8,10 @@ spring:
   application:
     name: spring-datarest-server
   datasource:
-    url: jdbc:sqlserver://cs544.cs.miu.edu:1433;databaseName=CS544-202305-05;trustServerCertificate=true
-    username: CS544-202305-05
-    password: 75e3514b
-    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:hsqldb:hsql://localhost:9003/trainingdb
+    username: SA
+    password:
+    driverClassName: org.hsqldb.jdbcDriver
     hikari:
       maximumPoolSize: 10
   jpa:
