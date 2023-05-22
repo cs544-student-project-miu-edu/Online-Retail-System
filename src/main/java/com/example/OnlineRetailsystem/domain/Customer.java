@@ -44,6 +44,9 @@ public class Customer {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     List<Order> orderList = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private CustomerType customerType;
+
     public void setDefaultShippingAddress(Address address) {
         if (shippingAddresses.contains(address)) {
             defaultShippingAddress = address;

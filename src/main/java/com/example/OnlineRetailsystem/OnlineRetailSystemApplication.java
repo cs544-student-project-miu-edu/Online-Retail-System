@@ -94,6 +94,7 @@ public class OnlineRetailSystemApplication implements CommandLineRunner {
 		Customer buyer = new Customer();
 		buyer.setFirstName("John");
 		buyer.setLastName("Doe");
+		buyer.setCustomerType(CustomerType.SELLER);
 		buyer.setEmail("john.doe@example.com");
 
 		List<Address> shippingAddressList = new ArrayList<>();
