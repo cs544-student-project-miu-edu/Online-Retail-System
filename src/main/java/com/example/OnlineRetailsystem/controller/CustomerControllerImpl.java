@@ -2,19 +2,26 @@ package com.example.OnlineRetailsystem.controller;
 //
 //import com.example.OnlineRetailsystem.domain.Customer;
 //import org.springframework.web.bind.annotation.RequestBody;
+
 import com.example.OnlineRetailsystem.domain.Customer;
+import com.example.OnlineRetailsystem.form.customer.CreateCustomerForm;
+import com.example.OnlineRetailsystem.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
 //
-@RestController
 public class CustomerControllerImpl implements CustomerController {
+    @Autowired
+    private CustomerService customerService;
 
     @Override
-    public ResponseEntity<?> createCustomer(Customer customer) {
-        return null;
+    public ResponseEntity<?> createCustomer(@RequestBody CreateCustomerForm createCustomerForm) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(createCustomerForm));
     }
 
     @Override

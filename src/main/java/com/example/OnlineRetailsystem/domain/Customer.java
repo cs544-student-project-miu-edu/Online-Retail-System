@@ -11,7 +11,6 @@ import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "customers")
 public class Customer {
 
@@ -22,16 +21,12 @@ public class Customer {
     private String firstName;
     private String lastName;
     private String email;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "billingAddressID")
+    @OneToOne
     private Address billingAddress;
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany
+    @JoinTable(name = "customerAddress")
     private List<Address> shippingAddresses = new ArrayList<>();
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "defaultShippingAddressID")
+    @OneToOne
     private Address defaultShippingAddress;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -46,6 +41,24 @@ public class Customer {
 
     @Enumerated(EnumType.STRING)
     private CustomerType customerType;
+
+    public Customer() {
+    }
+
+    public Customer(String firstName, String lastName, String email, Address billingAddress) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.billingAddress = billingAddress;
+        this.defaultShippingAddress = billingAddress;
+        this.defaultShippingAddress.setAddressType(AddressType.SHIPPINGADDRESS);
+        this.addShippingAddress(this.defaultShippingAddress);
+        this.customerType = CustomerType.BUYER;
+    }
+
+    public void addShippingAddress(Address address) {
+        shippingAddresses.add(address);
+    }
 
     public void setDefaultShippingAddress(Address address) {
         if (shippingAddresses.contains(address)) {

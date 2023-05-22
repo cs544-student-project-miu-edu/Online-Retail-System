@@ -1,16 +1,29 @@
 package com.example.OnlineRetailsystem.service;
 
-import com.example.OnlineRetailsystem.domain.Address;
-import com.example.OnlineRetailsystem.domain.CreditCard;
-import com.example.OnlineRetailsystem.domain.Customer;
-import com.example.OnlineRetailsystem.domain.Order;
+import com.example.OnlineRetailsystem.domain.*;
+import com.example.OnlineRetailsystem.form.customer.CreateCustomerForm;
+import com.example.OnlineRetailsystem.repository.AddressRepository;
+import com.example.OnlineRetailsystem.repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Repository
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private AddressRepository addressRepository;
+
     @Override
-    public Customer createCustomer(Customer customer) {
-        return null;
+    public Customer createCustomer(CreateCustomerForm customerForm) {
+        Address address = new Address(customerForm.getBillingAddressForm().getStreet(), customerForm.getBillingAddressForm().getCity(), customerForm.getBillingAddressForm().getState(), customerForm.getBillingAddressForm().getZipCode(), AddressType.BILLINGADDRESS);
+        addressRepository.save(address);
+        Customer customer = new Customer(customerForm.getFirstName(), customerForm.getLastName(), customerForm.getEmail(), address);
+        return customerRepository.save(customer);
     }
 
     @Override

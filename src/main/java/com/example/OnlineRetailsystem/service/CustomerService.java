@@ -2,13 +2,14 @@ package com.example.OnlineRetailsystem.service;
 
 import com.example.OnlineRetailsystem.domain.*;
 import com.example.OnlineRetailsystem.domain.Customer;
+import com.example.OnlineRetailsystem.form.customer.CreateCustomerForm;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 
 public interface CustomerService {
-    public Customer createCustomer(Customer customer);
+    public Customer createCustomer(CreateCustomerForm customerForm);
     public void deleteCustomerById(int customerID);
     public void updateCustomer(int customerId, Customer customer);
     public Customer getCustomer(int customerId);
