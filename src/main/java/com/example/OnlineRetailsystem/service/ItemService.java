@@ -14,5 +14,9 @@ public interface ItemService {
     public void updateItem(int itemId, Item item);
     public List<Item> getAllItems();
     List<Item> getItemReviews(int itemId);
+    public Review addReviewToItem(int itemId, Review review);
+    public Review updateReviewToItem(int itemId, Review review);
+    public void deleteReviewToItem(int itemId, Review review);
+
     Collection<Item> search(String name);
 }
