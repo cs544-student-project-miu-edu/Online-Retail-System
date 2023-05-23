@@ -20,6 +20,7 @@ public abstract class Item {
     private String name;
     private String description;
     private double price;
+    @Transient
     private byte[] image;
     private String barcodeNumber;
     private int quantity;
