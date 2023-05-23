@@ -8,16 +8,15 @@ spring:
   application:
     name: spring-datarest-server
   datasource:
-    url: jdbc:sqlserver://cs544.cs.miu.edu:1433;databaseName=CS544-202305-05;trustServerCertificate=true
-    username: CS544-202305-05
-    password: 75e3514b
+    url: jdbc:sqlserver://DESKTOP-HSQDKL8:1433;databaseName=springbootdb;trustServerCertificate=true
+    username: user
+    password: pass
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
     hikari:
       maximumPoolSize: 10
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto : create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
@@ -29,7 +28,3 @@ spring:
 logging:
   file:
     name: /CS544/Logging/${spring.application.name}/logs
-
-##DB Name: CS544-202305-05
-##DB Password: 75e3514b
-

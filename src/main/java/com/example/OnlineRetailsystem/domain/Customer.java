@@ -1,10 +1,7 @@
 package com.example.OnlineRetailsystem.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +35,10 @@ public class Customer {
     @JoinColumn(name = "customerID")
     private List<CreditCard> creditCards = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
-    List<Review> reviews = new ArrayList<>();
-
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
+//    List<Review> reviews = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    List<Order> orderList = new ArrayList<>();
+     List<Order> orderList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private CustomerType customerType;
@@ -54,4 +50,36 @@ public class Customer {
             throw new IllegalArgumentException("Customer doesnt have this address");
         }
     }
+    //TODO - mesi
+
+    // Sets the billing address and shipping addresses for the customer
+    public void setAddresses(List<Address> addresses) {
+        if (addresses != null && !addresses.isEmpty()) {
+            Address billingAddress = addresses.get(0);
+            billingAddress.setAddressType(AddressType.BILLINGADDRESS);
+            this.billingAddress = billingAddress;
+        }
+
+        if (addresses != null && addresses.size() > 1) {
+            this.shippingAddresses = addresses.subList(1, addresses.size()); //set default
+        } else {
+            this.shippingAddresses = new ArrayList<>();
+        }
+    }
+
+    public List<Address> getAddresses() {
+        List<Address> addresses = new ArrayList<>();
+        addresses.add(billingAddress);
+        addresses.addAll(shippingAddresses);
+        return addresses;
+    }
+
+    public List<Order> getOrders() {
+        return orderList;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orderList = orders;
+    }
+
 }
