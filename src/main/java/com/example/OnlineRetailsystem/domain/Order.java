@@ -20,7 +20,7 @@ public class Order {
     @Column(name = "orderID")
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // Added fetch type
     @JoinColumn(name = "customerID")
     private Customer customer;
 

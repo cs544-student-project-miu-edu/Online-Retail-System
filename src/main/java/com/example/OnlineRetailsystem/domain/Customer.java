@@ -40,9 +40,8 @@ public class Customer {
 
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
 //    List<Review> reviews = new ArrayList<>();
-//
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-//    List<Order> orderList = new ArrayList<>();
+//     List<Order> orderList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private CustomerType customerType;
@@ -54,4 +53,22 @@ public class Customer {
             throw new IllegalArgumentException("Customer doesnt have this address");
         }
     }
+    //TODO
+
+    // Sets the billing address and shipping addresses for the customer
+    public void setAddresses(List<Address> addresses) {
+        if (addresses != null && !addresses.isEmpty()) {
+            Address billingAddress = addresses.get(0);
+            billingAddress.setAddressType(AddressType.BILLINGADDRESS);
+            this.billingAddress = billingAddress;
+        }
+
+        if (addresses != null && addresses.size() > 1) {
+            this.shippingAddresses = addresses.subList(1, addresses.size()); //set default
+        } else {
+            this.shippingAddresses = new ArrayList<>();
+        }
+    }
+
+
 }

@@ -1,47 +1,52 @@
 package com.example.OnlineRetailsystem.service;
 
-import com.example.OnlineRetailsystem.domain.*;
+import com.example.OnlineRetailsystem.domain.Address;
+import com.example.OnlineRetailsystem.domain.CreditCard;
 import com.example.OnlineRetailsystem.domain.Customer;
+import com.example.OnlineRetailsystem.domain.Order;
+import com.example.OnlineRetailsystem.dto.AddressResponse;
+import com.example.OnlineRetailsystem.dto.CreditCardResponse;
+import com.example.OnlineRetailsystem.dto.CustomerResponse;
+import com.example.OnlineRetailsystem.dto.OrderResponse;
 import com.example.OnlineRetailsystem.form.customer.CreateCustomerForm;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-
 public interface CustomerService {
-    public Customer createCustomer(CreateCustomerForm customer);
 
-    public void deleteCustomerById(int customerID);
+    Customer createCustomer(CreateCustomerForm customerForm);
 
-    public void updateCustomer(int customerId, Customer customer);
+    Page<CustomerResponse> getAllCustomers(Pageable pageable);
 
-    public Customer getCustomer(int customerId);
+    CustomerResponse findCustomerById(int customerId);
 
-    public List<Customer> getAllCustomers();
+    CustomerResponse deleteCustomerById(int customerId);
 
-    public List<CreditCard> getCustomerCreditCards(int customerID);
+    void updateCustomer(int customerId, Customer customer);
 
-    public List<Address> getCustomerAddresses(int customerID);
+    List<CreditCard> getCustomerCreditCards(int customerId);
 
-    public List<Order> getCustomerOrders(int customerID);
+    List<Address> getCustomerAddresses(int customerId);
 
-    public CreditCard addCreditCardToCustomer(int customerID, CreditCard creditCard);
+    List<OrderResponse> getCustomerOrders(int customerId);
 
-    public Address addAddressToCustomer(int customerID, Address address);
+    CreditCardResponse addCreditCardToCustomer(int customerId, CreditCardResponse creditCard);
 
-    public Order addOrderToCustomer(int customerID, Order order);
+    AddressResponse addAddressToCustomer(int customerId, AddressResponse address);
 
-    public void deleteCustomerCreditCard(int customerID, CreditCard creditCard);
+    OrderResponse addOrderToCustomer(int customerId, OrderResponse order);
 
-    public void deleteCustomerAddress(int customerID, Address address);
+    void deleteCustomerCreditCard(int customerId, CreditCardResponse creditCard);
 
-    public void deleteCustomerOrder(int customerID, Order order);
+    void deleteCustomerAddress(int customerId, AddressResponse address);
 
-    public Customer updateCustomerCreditCard(int customerID, CreditCard creditCard);
+    void deleteCustomerOrder(int customerId, OrderResponse order);
 
-    public Customer updateCustomerAddress(int customerID, Address address);
+    CustomerResponse updateCustomerCreditCard(int customerId, CreditCardResponse creditCard);
 
-    public Customer updateCustomerOrder(int customerID, Order order);
+    CustomerResponse updateCustomerAddress(int customerId, AddressResponse address);
 
-
+    CustomerResponse updateCustomerOrder(int customerId, OrderResponse order);
 }
