@@ -23,11 +23,6 @@ public class OnlineRetailSystemApplication implements CommandLineRunner {
 
 			@Autowired
 			CustomerRepository customerRepository;
-
-
-
-
-
 			public static void main(String[] args) {
 				SpringApplication.run(OnlineRetailSystemApplication.class, args);
 			}
