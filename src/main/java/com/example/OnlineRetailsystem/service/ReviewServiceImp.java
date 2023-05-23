@@ -49,7 +49,7 @@ public class ReviewServiceImp implements ReviewService {
 
 
     public Review getReviewById(Long reviewId) {
-        Optional<Review> review= reviewRepository.findById((reviewId));
+        Optional<Review> review= reviewRepository.findById(reviewId);
         if (review.isEmpty()){
             return null;
         }
