@@ -12,16 +12,22 @@ import java.util.Optional;
 
 @Service
 public class ReviewServiceImp implements ReviewService {
-    @Autowired
+    //    @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    public ReviewServiceImp(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
+    }
+
     @Override
     public Review createReview(Review review) {
- return reviewRepository.save(review);
+        return reviewRepository.save(review);
     }
 
     @Override
     public void deleteReviewById(Long reviewID) {
-     reviewRepository.deleteById(reviewID);
+        reviewRepository.deleteById(reviewID);
     }
 
 
@@ -47,10 +53,9 @@ public class ReviewServiceImp implements ReviewService {
     }
 
 
-
     public Review getReviewById(Long reviewId) {
-        Optional<Review> review= reviewRepository.findById(reviewId);
-        if (review.isEmpty()){
+        Optional<Review> review = reviewRepository.findById(reviewId);
+        if (review.isEmpty()) {
             return null;
         }
         return review.get();
@@ -59,7 +64,7 @@ public class ReviewServiceImp implements ReviewService {
 
     @Override
     public List<Review> getAllReviews() {
-     return reviewRepository.findAll();
+        return reviewRepository.findAll();
     }
 
 }
