@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "items")

@@ -5,6 +5,7 @@ import com.example.OnlineRetailsystem.domain.*;
 import com.example.OnlineRetailsystem.dto.*;
 import com.example.OnlineRetailsystem.form.customer.*;
 import com.example.OnlineRetailsystem.repository.*;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Transactional
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
@@ -59,8 +60,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerResponse findCustomerById(int countryId) {
-        return mapper.map(customerRepository.findById(countryId).get(),CustomerResponse.class);
+    public CustomerResponse findCustomerById(int customerId) {
+        return mapper.map(customerRepository.findById(customerId).get(),CustomerResponse.class);
     }
     @Override
     public CustomerResponse deleteCustomerById(int customerID) {

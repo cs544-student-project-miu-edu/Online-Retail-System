@@ -17,9 +17,9 @@ public class OnlineRetailSystemApplication {
 
 //	@Autowired
 //	OrderRepository orderRepository;
-
-	@Autowired
-	CustomerRepository customerRepository;
+//
+//	@Autowired
+//	CustomerRepository customerRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OnlineRetailSystemApplication.class, args);
