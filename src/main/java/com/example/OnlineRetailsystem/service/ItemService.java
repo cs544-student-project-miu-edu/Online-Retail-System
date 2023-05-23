@@ -10,10 +10,10 @@ import java.util.List;
 public interface ItemService {
     public Item createItem(Item item);
     public void deleteItem(int itemID);
-
-    public void updateItem(int itemId, Item item);
+    public Item getItemById(int itemID);
+    public Item updateItem(int itemID, Item item);
     public List<Item> getAllItems();
-    List<Item> getItemReviews(int itemId);
+    List<Review> getItemReviews(int itemId);
     public Review addReviewToItem(int itemId, Review review);
     public Review updateReviewToItem(int itemId, Review review);
     public void deleteReviewToItem(int itemId, Review review);
