@@ -98,7 +98,7 @@ public class CustomerController {
 
     @GetMapping("/{cid}/orders")
     public List<ResponseEntity<OrderResponse>> getCustomerOrders(@PathVariable int customerId) {
-        List<Order> orders = customerService.getCustomerOrders(customerId);
+        List<OrderResponse> orders = customerService.getCustomerOrders(customerId);
 
         List<ResponseEntity<OrderResponse>> responseEntities = orders.stream()
                 .map(order -> ResponseEntity.ok().body(mapper.map(order, OrderResponse.class)))

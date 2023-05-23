@@ -1,10 +1,7 @@
 package com.example.OnlineRetailsystem.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +37,8 @@ public class Customer {
 
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
 //    List<Review> reviews = new ArrayList<>();
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-//     List<Order> orderList = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+     List<Order> orderList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private CustomerType customerType;

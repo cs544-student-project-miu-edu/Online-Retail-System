@@ -104,6 +104,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .map(order -> mapper.map(order, OrderResponse.class))
                 .collect(Collectors.toList());
     }
+
     @Override
     public CreditCardResponse addCreditCardToCustomer(int customerId, CreditCardResponse creditCard) {
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
@@ -221,6 +222,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new NotFoundException("Customer not found with ID: " + customerId);
         }
     }
+
 
 
     @Override
