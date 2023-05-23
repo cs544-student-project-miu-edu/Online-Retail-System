@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
 @Data
-@Table(name = "compositeItems")
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompositeItem extends Item {

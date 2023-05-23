@@ -7,11 +7,10 @@ import java.util.List;
 
 public interface ReviewService {
     public Review createReview(Review review);
-    public void deleteReviewById(Long reviewID);
+    public void deleteReview(int reviewID);
 
-    public Review updateReviewById(Long reviewId, Review review);
-
+    public void updateReview(int reviewId, Review review);
+    public Review getReview(int reviewId);
     public List<Review> getAllReviews();
-    public Review getReviewById(Long reviewId);
 
 }

@@ -21,7 +21,7 @@ public class OrderResponse {
 
     private OrderState status;
 
-    private List<OrderLineResponse> lineItems = new ArrayList<>();
+    private List<ItemLineResponse> lineItems = new ArrayList<>();
 
 
 }
