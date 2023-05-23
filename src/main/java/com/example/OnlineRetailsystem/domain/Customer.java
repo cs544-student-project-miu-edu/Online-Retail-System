@@ -50,7 +50,7 @@ public class Customer {
             throw new IllegalArgumentException("Customer doesnt have this address");
         }
     }
-    //TODO
+    //TODO - mesi
 
     // Sets the billing address and shipping addresses for the customer
     public void setAddresses(List<Address> addresses) {
@@ -67,5 +67,19 @@ public class Customer {
         }
     }
 
+    public List<Address> getAddresses() {
+        List<Address> addresses = new ArrayList<>();
+        addresses.add(billingAddress);
+        addresses.addAll(shippingAddresses);
+        return addresses;
+    }
+
+    public List<Order> getOrders() {
+        return orderList;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orderList = orders;
+    }
 
 }

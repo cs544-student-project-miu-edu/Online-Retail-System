@@ -6,6 +6,7 @@ import com.example.OnlineRetailsystem.dto.*;
 import com.example.OnlineRetailsystem.form.customer.*;
 import com.example.OnlineRetailsystem.repository.*;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -257,20 +258,27 @@ public class CustomerServiceImpl implements CustomerService {
         if (customerOptional.isPresent()) {
             Customer customer = customerOptional.get();
             Order existingOrder = mapper.map(order, Order.class);
-            // Update the order properties in the customer's list of orders
-            customer.getOrders().stream()
+
+            // Find the order in the customer's list of orders
+            Optional<Order> orderOptional = customer.getOrders().stream()
                     .filter(ord -> ord.getId() == existingOrder.getId())
-                    .findFirst()
-                    .ifPresent(ord -> {
-                        ord.setStatus(existingOrder.getStatus());
-                        ord.setLineItems(existingOrder.getLineItems());
-                        // You might need to update other properties of the order here
-                    });
-            customerRepository.save(customer);
-            return mapper.map(customer, CustomerResponse.class);
+                    .findFirst();
+
+            if (orderOptional.isPresent()) {
+                Order orderToUpdate = orderOptional.get();
+                orderToUpdate.setState(existingOrder.getState());
+                orderToUpdate.setLineItems(mapper.map(order.getLineItems(), new TypeToken<List<ItemLine>>() {}.getType()));
+                // You might need to update other properties of the order here
+
+                customerRepository.save(customer);
+                return mapper.map(customer, CustomerResponse.class);
+            } else {
+                throw new NotFoundException("Order not found with ID: " + existingOrder.getId());
+            }
         } else {
             throw new NotFoundException("Customer not found with ID: " + customerId);
         }
     }
+
 
 }
