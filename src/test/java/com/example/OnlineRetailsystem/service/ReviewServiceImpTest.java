@@ -28,19 +28,4 @@ class ReviewServiceImpTest {
         assertEquals(review, result);
     }
 
-    @Test
-    void deleteReviewById() {
-    }
-
-    @Test
-    void updateReviewById() {
-    }
-
-    @Test
-    void getReviewById() {
-    }
-
-    @Test
-    void getAllReviews() {
-    }
 }
