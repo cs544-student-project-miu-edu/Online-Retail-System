@@ -8,6 +8,10 @@ public class CreateCustomerForm {
     private String lastName;
     @NotBlank
     private String email;
+    @NotBlank
+    private String username;
+    @NotBlank
+    private String password;
     @JsonProperty("address")
     @NotNull
     private AddressForm address;
@@ -26,5 +30,11 @@ public class CreateCustomerForm {
 
     public AddressForm getBillingAddressForm() {
         return address;
+    }
+    public String getUsername(){
+        return this.username;
+    }
+    public String getPassword(){
+        return  this.password;
     }
 }

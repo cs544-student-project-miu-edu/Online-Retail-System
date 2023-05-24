@@ -44,7 +44,8 @@ public class Customer {
 
     @Enumerated(EnumType.STRING)
     private CustomerType customerType;
-
+     @Embedded
+     private credintials credintials;
     public Customer() {
     }
 
@@ -53,7 +54,9 @@ public class Customer {
         this.lastName = lastName;
         this.email = email;
     }
-
+    public void setCredintials(credintials credintials){
+        this.credintials = credintials;
+    }
     public Customer(String firstName, String lastName, String email, Address billingAddress, Address defaultShippingAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
