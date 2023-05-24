@@ -11,11 +11,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 @Transactional
 @Service
@@ -23,6 +19,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private ModelMapper mapper;
+    //For testing
+    public CustomerServiceImpl(ModelMapper mapper) {
+        this.mapper = mapper;
+    }
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -33,25 +33,18 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     CreditCardRepository creditCardRepository;
 
+    @Autowired
+    AddressRepository addressRepository;
 
-
-    @Override
-    public Customer createCustomer(CreateCustomerForm customerForm) {
-        // Map the form data to the Customer object
-        Customer customer = mapper.map(customerForm, Customer.class);
-
-        // Map the billing address form data to the Address object
-        CreateAddressForm addressForm = customerForm.getBillingAddressForm();
-        Address billingAddress = mapper.map(addressForm, Address.class);
-        billingAddress.setAddressType(AddressType.BILLINGADDRESS);
-
-        // Set the billing address for the customer
-        customer.setAddresses(Collections.singletonList(billingAddress));
-
-        return customerRepository.save(customer);
+    //@Transactional
+    public CustomerResponse createCustomer(CreateCustomerForm customer) {
+        Address billingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.BILLINGADDRESS);
+        Address defaultShippingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.SHIPPINGADDRESS);
+        Customer newCustomer = new Customer(customer.getFirstName(), customer.getLastName(), customer.getEmail(), billingAddress, defaultShippingAddress);
+        Customer createdCustomer = customerRepository.save(newCustomer);
+        return mapper.map(createdCustomer, CustomerResponse.class);
     }
 
-    //TODO - Implementation - By Meseret
     @Override
     public Page<CustomerResponse> getAllCustomers(Pageable pageable) {
 
@@ -91,13 +84,15 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CreditCard> getCustomerCreditCards(int customerId) {
-        return creditCardRepository.findByCustomerId(customerId);
+        return creditCardRepository.findCreditCardsByCustomerId(customerId);
     }
 
+
     @Override
-    public List<Address> getCustomerAddresses(int customerID) {
-        return null;
+    public List<Address> getCustomerAddresses(int customerId) {
+        return addressRepository.findAddressByCustomerId(customerId);
     }
+
 
     @Override
     public List<OrderResponse> getCustomerOrders(int customerId) {
@@ -172,18 +167,31 @@ public class CustomerServiceImpl implements CustomerService {
             Customer customer = customerOptional.get();
             Address existingAddress = mapper.map(address, Address.class);
 
-            // We need to check if the existing address is the default shipping address
+            // Check if the existing address is the default shipping address
             if (customer.getDefaultShippingAddress() != null && customer.getDefaultShippingAddress().equals(existingAddress)) {
-                customer.setDefaultShippingAddress(null);
+                // Remove the existing address from the list of shipping addresses
+                customer.getShippingAddresses().remove(existingAddress);
+
+                // Set a new default shipping address if there are other addresses available
+                if (!customer.getShippingAddresses().isEmpty()) {
+                    Address newDefaultAddress = customer.getShippingAddresses().get(0);
+                    customer.setDefaultShippingAddress(newDefaultAddress.getId());
+                } else {
+                    // If there are no other addresses, set the default shipping address to null
+                    customer.setDefaultShippingAddress(null);
+                }
+            } else {
+                // If the existing address is not the default, simply remove it from the list of shipping addresses
+                customer.getShippingAddresses().remove(existingAddress);
             }
 
-
-            customer.getShippingAddresses().remove(existingAddress);
             customerRepository.save(customer);
         } else {
             throw new NotFoundException("Customer not found with ID: " + customerId);
         }
     }
+
+
 
     @Override
     public void deleteCustomerOrder(int customerId, OrderResponse order) {

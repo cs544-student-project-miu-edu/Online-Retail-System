@@ -15,9 +15,9 @@ public class AddressResponse {
     private String city;
     private String state;
     private String zipCode;
-    private boolean isDefault;
+    private boolean isDefault; // TODO - check the default value returned
 
-    private CustomerResponse customerResponse;
+    private CustomerResponse customerResponse; // TODO - ???
 
     private AddressType addressType;
 

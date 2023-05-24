@@ -182,7 +182,7 @@ public class OnlineRetailSystemApplication implements CommandLineRunner {
 
 
 				buyer.setShippingAddresses(shippingAddressList);
-				buyer.setDefaultShippingAddress(defaultShippingAddress);
+				buyer.setDefaultShippingAddress(defaultShippingAddress.getId());
 				buyer.setBillingAddress(billingAddress);
 				buyer.setCreditCards(creditCards);
 				customerRepository.save(buyer);

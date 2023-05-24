@@ -1,10 +1,16 @@
 package com.example.OnlineRetailsystem.form.customer;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
 public class CreateCustomerForm {
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
+    @NotBlank
     private String email;
-    private CreateAddressForm createAddressForm;
+    @JsonProperty("address")
+    @NotNull
+    private AddressForm address;
 
     public String getFirstName() {
         return firstName;
@@ -18,7 +24,7 @@ public class CreateCustomerForm {
         return email;
     }
 
-    public CreateAddressForm getBillingAddressForm() {
-        return createAddressForm;
+    public AddressForm getBillingAddressForm() {
+        return address;
     }
 }

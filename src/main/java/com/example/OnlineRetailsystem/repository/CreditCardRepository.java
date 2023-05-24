@@ -7,8 +7,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
-public interface CreditCardRepository extends JpaRepository <CreditCard, Integer> {
+public interface CreditCardRepository extends JpaRepository<CreditCard, Integer> {
 
-    @Query("SELECT c FROM CreditCard c WHERE c.id = :customerId")
-    List<CreditCard> findByCustomerId(@Param("customerId") int customerId);
+    @Query("SELECT c FROM CreditCard c WHERE c.id IN (SELECT cc.id FROM Customer cust JOIN cust.creditCards cc WHERE cust.id = :customerId)")
+    List<CreditCard> findCreditCardsByCustomerId(@Param("customerId") int customerId);
+
 }
+
+

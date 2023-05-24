@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface CustomerService {
 
-    Customer createCustomer(CreateCustomerForm customerForm);
+    CustomerResponse createCustomer(CreateCustomerForm customerForm);
 
     Page<CustomerResponse> getAllCustomers(Pageable pageable);
 

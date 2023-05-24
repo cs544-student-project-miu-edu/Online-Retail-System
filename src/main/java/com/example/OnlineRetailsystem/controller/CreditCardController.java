@@ -13,11 +13,11 @@ import java.util.List;
 @RequestMapping("/api/v1/creditCrd")
 public class CreditCardController {
 
-    @Autowired
-    CreditCardService creditCardService;
-    @GetMapping("/")
-
-    public List<CreditCard> getAllCreditCard(){
-        return creditCardService.getAllCreditCards();
-    }
+//    @Autowired
+//    CreditCardService creditCardService;
+//    @GetMapping("/")
+//
+//    public List<CreditCard> getAllCreditCard(){
+//        return creditCardService.getAllCreditCards();
+//    }
 }

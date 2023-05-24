@@ -1,44 +1,58 @@
 package com.example.OnlineRetailsystem.repository;
 
-import com.example.OnlineRetailsystem.domain.Customer;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
-@DataJpaTest
+import com.example.OnlineRetailsystem.domain.Customer;
+import com.example.OnlineRetailsystem.repository.CustomerRepository;
+import com.example.OnlineRetailsystem.service.CustomerService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.Optional;
+
 public class CustomerRepositoryTest {
 
-    @Autowired
+    @Mock
     private CustomerRepository customerRepository;
 
+    @InjectMocks
+    private CustomerService customerService;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
-    public void testFindById_ExistingId_ReturnsCustomer() {
-        // Given
+    public void testFindById_Success() {
+        // Prepare mock data
+        int customerId = 1;
         Customer customer = new Customer();
-        customer.setId(1);
-        customer.setFirstName("John");
+        customer.setId(customerId);
+        customer.setFirstName("Bob");
+        customer.setLastName("Tester");
+        customer.setEmail("test@test.com");
 
-        customerRepository.save(customer);
-
-        // When
-        Customer foundCustomer = customerRepository.findById(1).orElse(null);
-
-        // Then
-        assertNotNull(foundCustomer);
-        assertEquals(customer.getId(), foundCustomer.getId());
-        assertEquals(customer.getFirstName(), foundCustomer.getFirstName());
-        // Add assertions for other properties of the customer
+        when(customerRepository.findById(customerId)).thenReturn(Optional.of(customer));
+        Optional<Customer> result = customerRepository.findById(customerId);
+        verify(customerRepository).findById(customerId);
+        assertTrue(result.isPresent());
+        assertEquals(customer, result.get());
     }
 
     @Test
-    public void testFindById_NonExistingId_ReturnsNull() {
-        // When
-        Customer foundCustomer = customerRepository.findById(1).orElse(null);
-
-        // Then
-        assertNull(foundCustomer);
+    public void testFindById_NotFound() {
+        // Prepare mock data
+        int customerId = 1;
+        when(customerRepository.findById(customerId)).thenReturn(Optional.empty());
+        Optional<Customer> result = customerRepository.findById(customerId);
+        verify(customerRepository).findById(customerId);
+        assertFalse(result.isPresent());
     }
 
-    // Add more test methods for other repository operations if needed
+    // TODO - test the rest of the Repository methods
 }

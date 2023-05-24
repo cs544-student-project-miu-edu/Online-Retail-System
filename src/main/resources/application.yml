@@ -9,7 +9,7 @@ spring:
     name: spring-datarest-server
   datasource:
     url: jdbc:sqlserver://DESKTOP-HSQDKL8:1433;databaseName=springbootdb;trustServerCertificate=true
-    username: user
+    username: sa
     password: pass
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
     hikari:
@@ -17,6 +17,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl

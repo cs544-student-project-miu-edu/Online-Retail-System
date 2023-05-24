@@ -11,6 +11,7 @@ import com.example.OnlineRetailsystem.dto.CustomerResponse;
 import com.example.OnlineRetailsystem.dto.OrderResponse;
 import com.example.OnlineRetailsystem.form.customer.CreateCustomerForm;
 import com.example.OnlineRetailsystem.service.CustomerService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,15 +23,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-@RequestMapping("/customers")
+@CrossOrigin
+@RequestMapping("api/customers")
 @RestController
 public class CustomerController {
 
     @Autowired
     ModelMapper mapper;
+
     @Autowired
     private CustomerService customerService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CustomerResponse createCustomer(@Valid @RequestBody CreateCustomerForm form) {
+        return customerService.createCustomer(form);
+    }
 
     @GetMapping
     public Page<CustomerResponse> getAllCustomers(Pageable pageable) {
@@ -107,15 +115,4 @@ public class CustomerController {
         return responseEntities;
     }
 
-    //TODO - Jimmy
-    @PostMapping()
-    public ResponseEntity<?> createCustomer(@RequestBody CreateCustomerForm customerForm) {
-        try {
-            Customer createdCustomer = customerService.createCustomer(customerForm);
-            return ResponseEntity.ok(createdCustomer);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error creating customer: " + e.getMessage());
-        }
-    }
 }

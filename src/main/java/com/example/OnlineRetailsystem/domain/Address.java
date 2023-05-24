@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+
 @Table(name = "addresses")
 public class Address {
 
@@ -25,7 +25,17 @@ public class Address {
     @JoinColumn(name = "customerID")
     private Customer customer;
 
-   @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private AddressType addressType;
 
+    public Address(String street, String city, String state, String zipCode, AddressType addressType) {
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.addressType = addressType;
+    }
+
+    public Address() {
+    }
 }
