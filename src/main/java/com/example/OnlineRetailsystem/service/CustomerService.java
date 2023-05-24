@@ -49,4 +49,6 @@ public interface CustomerService {
     CustomerResponse updateCustomerAddress(int customerId, AddressResponse address);
 
     CustomerResponse updateCustomerOrder(int customerId, OrderResponse order);
+//TODO
+    Address getCustomerAddress(int customerId, int addressId);
 }

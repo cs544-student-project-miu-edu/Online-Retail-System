@@ -10,6 +10,7 @@ import com.example.OnlineRetailsystem.dto.CreditCardResponse;
 import com.example.OnlineRetailsystem.dto.CustomerResponse;
 import com.example.OnlineRetailsystem.dto.OrderResponse;
 import com.example.OnlineRetailsystem.form.customer.CreateCustomerForm;
+import com.example.OnlineRetailsystem.service.CreditCardService;
 import com.example.OnlineRetailsystem.service.CustomerService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -33,6 +34,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+//    @Autowired
+//    CreditCardService creditCardService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -66,53 +70,44 @@ public class CustomerController {
     }
 
     @GetMapping("/{cid}/creditCards")
-    public List<ResponseEntity<CustomerResponse>> getCustomerCreditCards(@PathVariable int cid) {
-        CustomerResponse customerResponse = customerService.findCustomerById(cid);
-        if (customerResponse != null) {
-            List<CreditCard> creditCards = customerService.getCustomerCreditCards(cid);
-            List<CreditCardResponse> creditCardResponses = creditCards.stream()
-                    .map(creditCard -> mapper.map(creditCard, CreditCardResponse.class))
-                    .collect(Collectors.toList());
-
-            List<ResponseEntity<CustomerResponse>> responseEntities = creditCardResponses.stream()
-                    .map(creditCardResponse -> {
-                        CustomerResponse response = new CustomerResponse();
-                        response.getCreditCards().add(creditCardResponse);
-                        return ResponseEntity.ok(response);
-                    })
-                    .collect(Collectors.toList());
-
-            return responseEntities;
-        } else {
-            throw new NotFoundException("Customer not found with ID: " + cid);
-        }
+    public ResponseEntity<List<CreditCard>> getCustomerCreditCards(@PathVariable("cid") int customerId) {
+        List<CreditCard> creditCards = customerService.getCustomerCreditCards(customerId);
+        return ResponseEntity.ok(creditCards);
     }
 
-    @GetMapping("/{cid}/addresses")
-    public List<ResponseEntity<AddressResponse>> getCustomerAddresses(@PathVariable int customerId) {
+//    @GetMapping("/{customerId}/creditCard/{cardId}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public CreditCardResponse getCustomersCreditCard(@PathVariable int customerId, @PathVariable int cardId) {
+//        return mapper.map(creditCardService.getCustomersCreditCard(customerId, cardId), CreditCardResponse.class);
+//    }
+
+//    @DeleteMapping("/customers/{customerID}/creditCard/{cardID}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void deleteCreditCard(@PathVariable int customerID, @PathVariable int cardID) {
+//        creditCardService.deleteCreditCard(customerID, cardID);
+//    }
+
+    @GetMapping("/{customerId}/addresses")
+    public ResponseEntity<List<Address>> getCustomerAddresses(@PathVariable("customerId") int customerId) {
         List<Address> addresses = customerService.getCustomerAddresses(customerId);
-
-        List<AddressResponse> addressResponses = addresses.stream()
-                .map(address -> mapper.map(address, AddressResponse.class))
-                .collect(Collectors.toList());
-
-        List<ResponseEntity<AddressResponse>> responseEntities = addressResponses.stream()
-                .map(addressResponse -> ResponseEntity.ok().body(addressResponse))
-                .collect(Collectors.toList());
-
-        return responseEntities;
+        return ResponseEntity.ok(addresses);
     }
 
+    //TODO - need to implement AddressService
+    @GetMapping("/{customerId}/addresses/{addressId}")
+    public ResponseEntity<Address> getCustomerAddress(@PathVariable("customerId") int customerId, @PathVariable("addressId") int addressId) {
+        Address address = customerService.getCustomerAddress(customerId, addressId);
+        if (address == null) {
+            throw new NotFoundException("Address not found for customer with ID: " + customerId + " and address ID: " + addressId);
+        }
+        return ResponseEntity.ok(address);
+    }
 
-    @GetMapping("/{cid}/orders")
-    public List<ResponseEntity<OrderResponse>> getCustomerOrders(@PathVariable int customerId) {
+    //TODO - need to implement orderService
+    @GetMapping("/{customerId}/orders")
+    public ResponseEntity<List<OrderResponse>> getCustomerOrders(@PathVariable("customerId") int customerId) {
         List<OrderResponse> orders = customerService.getCustomerOrders(customerId);
-
-        List<ResponseEntity<OrderResponse>> responseEntities = orders.stream()
-                .map(order -> ResponseEntity.ok().body(mapper.map(order, OrderResponse.class)))
-                .collect(Collectors.toList());
-
-        return responseEntities;
+        return ResponseEntity.ok(orders);
     }
 
 }

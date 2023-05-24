@@ -101,6 +101,21 @@ public class CustomerServiceImpl implements CustomerService {
                 .map(order -> mapper.map(order, OrderResponse.class))
                 .collect(Collectors.toList());
     }
+    // TODO - implementation on AddressService
+    @Override
+    public Address getCustomerAddress(int customerId, int addressId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new NotFoundException("Customer not found with ID: " + customerId));
+
+        List<Address> addresses = customer.getAddresses();
+        for (Address address : addresses) {
+            if (address.getId() == addressId) {
+                return address;
+            }
+        }
+
+        throw new NotFoundException("Address not found for customer with ID: " + customerId + " and address ID: " + addressId);
+    }
 
     @Override
     public CreditCardResponse addCreditCardToCustomer(int customerId, CreditCardResponse creditCard) {
