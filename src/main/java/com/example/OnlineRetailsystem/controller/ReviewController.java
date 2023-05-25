@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/reviews")
+@RequestMapping("/api/v1/items/{itemID}/reviews")
 public class ReviewController {
     @Autowired
     ReviewService reviewService;
@@ -18,22 +18,22 @@ public class ReviewController {
         return reviewService.getAllReviews();
     }
     @GetMapping("/{id}")
-    public void getReviewById(@PathVariable Long id) {
+    public void getReviewById(@PathVariable int itemID, @PathVariable Long id) {
         reviewService.getReviewById(id);
     }
 
     @PostMapping("/newReview")
-    public Review createNewReview(@RequestBody Review review) {
+    public Review createNewReview(@PathVariable int itemID, @RequestBody Review review) {
         return reviewService.createReview(review);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteReview(@PathVariable Long id) {
+    public void deleteReview(@PathVariable int itemID, @PathVariable Long id) {
         reviewService.deleteReviewById(id);
     }
 
     @PutMapping("/{id}")
-    public Review updateReview(@PathVariable Long id, @RequestBody Review review) {
+    public Review updateReview(@PathVariable int itemID, @PathVariable Long id, @RequestBody Review review) {
         return reviewService.updateReviewById(id, review);
     }
 }
