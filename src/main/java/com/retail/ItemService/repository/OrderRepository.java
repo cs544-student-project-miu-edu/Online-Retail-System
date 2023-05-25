@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query("SELECT o FROM Order o WHERE o.customer.id = :customerID AND o.state = 'NEW' ")
-    Optional<Order> findOrderByCustomer(@Param("customerID") int customerID);
+    Optional<Order> findOrderByCustomerWithNewStatus(@Param("customerID") int customerID);
     @Query("SELECT o FROM Order o WHERE o.customer.id = :customerID")
     Optional<Order> findAllOrderByCustomer(@Param("customerID") int customerID);
 }

@@ -1,5 +1,6 @@
 package com.retail.ItemService.domain;
 
+import com.retail.ItemService.ResponseError.NotAcceptable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -94,6 +95,17 @@ public abstract class Item {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public void decreaseQuantity(int quantity) {
+        if (this.quantity < quantity || this.quantity == 0) {
+            throw new NotAcceptable("Item does not have enough stock");
+        }
+        this.quantity = this.quantity - quantity;
+    }
+
+    public void increaseQuantity(int quantity) {
+        this.quantity = this.quantity + quantity;
     }
 
     public List<Review> getReviews() {

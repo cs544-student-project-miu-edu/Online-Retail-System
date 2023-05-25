@@ -50,6 +50,10 @@ public class ItemService {
                 .orElseThrow(() -> new NotFoundException("Item not found with ID: " + itemID));
     }
 
+    public void saveAllItems(List<Item> items) {
+        itemRepository.saveAll(items);
+    }
+
     public Item updateItem(int itemID, UpdateItemForm form) {
         Item existingItem = getItemById(itemID);
         existingItem.setName(form.getName());

@@ -1,5 +1,6 @@
 package com.retail.ItemService.service;
 
+import com.retail.ItemService.ResponseError.NotFoundException;
 import com.retail.ItemService.domain.*;
 import com.retail.ItemService.dto.OrderResponse;
 import com.retail.ItemService.form.ItemLineForm;
@@ -14,6 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/*
+ * @TODO
+ *   jms sender here
+ * */
 @Repository
 @Transactional
 public class OrderService {
@@ -28,7 +33,7 @@ public class OrderService {
 
     public OrderResponse createOrder(OrderForm form, int customerID) {
         Order order;
-        Optional<Order> orderOptional = orderRepository.findOrderByCustomer(customerID);
+        Optional<Order> orderOptional = orderRepository.findOrderByCustomerWithNewStatus(customerID);
         if (orderOptional.isPresent()) {
             order = orderOptional.get();
         } else {
@@ -38,21 +43,68 @@ public class OrderService {
             order.setCustomer(customer);
             order.setShippingAddress(customer.getDefaultShippingAddress());
         }
+        List<Item> orderedItems = new ArrayList<>();
         for (ItemLineForm lineForm : form.getItems()) {
-            Optional<ItemLine> existingLine = order.getLineItems().stream().filter(item -> item.getId() == lineForm.getItemID()).findFirst();
+            Optional<ItemLine> existingLine = order.getLineItems().stream().filter(item -> item.getItem().getItemID() == lineForm.getItemID()).findFirst();
             if (existingLine.isPresent()) {
                 ItemLine line = existingLine.get();
+                line.getItem().decreaseQuantity(lineForm.getQuantity());
+                orderedItems.add(line.getItem());
                 line.setQuantity(line.getQuantity() + lineForm.getQuantity());
             } else {
                 Item item = itemService.getItemById(lineForm.getItemID());
+                item.decreaseQuantity(lineForm.getQuantity());
+                orderedItems.add(item);
                 order.getLineItems().add(new ItemLine(item, lineForm.getQuantity()));
             }
         }
+        itemService.saveAllItems(orderedItems);
         return mapper.map(orderRepository.save(order), OrderResponse.class);
     }
 
     public List<OrderResponse> getAllOrderByCustomerID(int customerID) {
         return orderRepository.findAllOrderByCustomer(customerID).stream().map(order -> mapper.map(order, OrderResponse.class)).toList();
+    }
+
+    public void placeOrder(int customerID) {
+        Optional<Order> orderOptional = orderRepository.findOrderByCustomerWithNewStatus(customerID);
+        if (!orderOptional.isPresent()) {
+            throw new NotFoundException("No order to be placed");
+        }
+        Order order = orderOptional.get();
+        order.setState(OrderState.PLACED);
+        orderRepository.save(order);
+    }
+
+    public Order getOrderByID(int orderID) {
+        Optional<Order> orderOptional = orderRepository.findById(orderID);
+        if (!orderOptional.isPresent()) {
+            throw new NotFoundException("No order found");
+        }
+        return orderOptional.get();
+    }
+
+    public OrderResponse getOrderByIDwithDto(int orderID) {
+        return mapper.map(getOrderByID(orderID), OrderResponse.class);
+    }
+
+    public List<OrderResponse> getAllOrder() {
+        return orderRepository.findAll().stream().map(order -> mapper.map(order, OrderResponse.class)).toList();
+    }
+
+    public void deleteOrder(int customerID) {
+        Optional<Order> orderOptional = orderRepository.findOrderByCustomerWithNewStatus(customerID);
+        if (!orderOptional.isPresent()) {
+            throw new NotFoundException("No order to be placed");
+        }
+        Order order = orderOptional.get();
+        List<Item> orderedItems = new ArrayList<>();
+        for (ItemLine line : order.getLineItems()) {
+            line.getItem().increaseQuantity(line.getQuantity());
+            orderedItems.add(line.getItem());
+        }
+        itemService.saveAllItems(orderedItems);
+        orderRepository.delete(order);
     }
 //    public void order(){
 //        Order order;

@@ -1,6 +1,7 @@
 package com.retail.ItemService.controller;
 
 import com.retail.ItemService.ResponseError.EmptyRequestException;
+import com.retail.ItemService.ResponseError.NotAcceptable;
 import com.retail.ItemService.ResponseError.NotFoundException;
 import lombok.Data;
 import org.modelmapper.spi.ErrorMessage;
@@ -37,5 +38,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         String errorMessageDescription = ex.getMessage();
         Message errorMessage = new Message(errorMessageDescription);
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {NotAcceptable.class})
+    public ResponseEntity<?> handleNotAccaptableException(Exception ex, WebRequest request) {
+        String errorMessageDescription = ex.getMessage();
+        Message errorMessage = new Message(errorMessageDescription);
+        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
     }
 }
