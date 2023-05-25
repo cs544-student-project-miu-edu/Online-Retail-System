@@ -15,6 +15,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @Table(name = "customers")
+@SecondaryTable(name="credentials")
 public class Customer {
 
     @Id
@@ -49,11 +50,16 @@ public class Customer {
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
 //     List<Order> orderList = new ArrayList<>();
 
+    @Column(table = "credentials")
     @Enumerated(EnumType.STRING)
     private CustomerType customerType;
+    @Column(table = "credentials")
+    private String username;
 
-    @Embedded
-    private Credintials credintials;
+    @Column(table = "credentials")
+    private String password;
+//    @Embedded
+//    private Credintials credintials;
 
     public Customer() {
     }
@@ -64,9 +70,9 @@ public class Customer {
         this.email = email;
     }
 
-    public void setCredintials(Credintials credintials){
-        this.credintials = credintials;
-    }
+//    public void setCredintials(Credintials credintials){
+//        this.credintials = credintials;
+//    }
 
     public Customer(String firstName, String lastName, String email, Address billingAddress, Address defaultShippingAddress) {
         this.firstName = firstName;
