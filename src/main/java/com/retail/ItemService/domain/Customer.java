@@ -24,6 +24,11 @@ public class Customer {
     private String firstName;
     private String lastName;
     private String email;
+    @Column(table = "credentials")
+    private String username;
+
+    @Column(table = "credentials")
+    private String password;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "billingAddressID")
@@ -53,11 +58,7 @@ public class Customer {
     @Column(table = "credentials")
     @Enumerated(EnumType.STRING)
     private CustomerType customerType;
-    @Column(table = "credentials")
-    private String username;
 
-    @Column(table = "credentials")
-    private String password;
 //    @Embedded
 //    private Credintials credintials;
 

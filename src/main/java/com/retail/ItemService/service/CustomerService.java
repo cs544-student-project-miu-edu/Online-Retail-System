@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,8 @@ import java.util.Optional;
 @Transactional
 public class CustomerService {
     @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+    @Autowired
     private ModelMapper mapper;
 
     @Autowired
@@ -32,6 +35,7 @@ public class CustomerService {
         Address billingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.BILLINGADDRESS);
         Address defaultShippingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.SHIPPINGADDRESS);
         Customer newCustomer = new Customer(customer.getFirstName(), customer.getLastName(), customer.getEmail(), billingAddress, defaultShippingAddress);
+        newCustomer.setPassword(passwordEncoder.encode(customer.getPassword()));
 //        newCustomer.setCredintials(new Credintials(customer.getUsername(),customer.getPassword()));
         Customer createdCustomer = customerRepository.save(newCustomer);
 
