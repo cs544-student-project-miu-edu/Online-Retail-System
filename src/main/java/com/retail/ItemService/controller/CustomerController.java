@@ -34,17 +34,17 @@ public class CustomerController {
         return customerService.getAllCustomers(pageable);
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping("/{customerID}")
     @ResponseStatus(HttpStatus.OK)
-    public CustomerResponse getCustomerById(@PathVariable int customerId) {
-        return customerService.findCustomerById(customerId);
+    public CustomerResponse getCustomerById(@PathVariable int customerID) {
+        return customerService.findCustomerById(customerID);
     }
 
-    @DeleteMapping("/{customerId}")
+    @DeleteMapping("/{customerID}")
     @ResponseStatus(HttpStatus.OK)
-    public CustomerResponse deleteCustomerById(@PathVariable int customerId) {
-        CustomerResponse customerResponse = customerService.findCustomerById(customerId);
-        customerService.deleteCustomerByID(customerId);
+    public CustomerResponse deleteCustomerById(@PathVariable int customerID) {
+        CustomerResponse customerResponse = customerService.findCustomerById(customerID);
+        customerService.deleteCustomerByID(customerID);
         return customerResponse;
     }
 
