@@ -5,6 +5,7 @@ import com.retail.ItemService.Utils.HelperFunction;
 import com.retail.ItemService.domain.Address;
 import com.retail.ItemService.domain.AddressType;
 import com.retail.ItemService.domain.Customer;
+import com.retail.ItemService.domain.Credintials;
 import com.retail.ItemService.dto.CustomerResponse;
 import com.retail.ItemService.form.CreateCustomerForm;
 import com.retail.ItemService.form.UpdateCustomerForm;
@@ -31,7 +32,9 @@ public class CustomerService {
         Address billingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.BILLINGADDRESS);
         Address defaultShippingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.SHIPPINGADDRESS);
         Customer newCustomer = new Customer(customer.getFirstName(), customer.getLastName(), customer.getEmail(), billingAddress, defaultShippingAddress);
+        newCustomer.setCredintials(new Credintials(customer.getUsername(),customer.getPassword()));
         Customer createdCustomer = customerRepository.save(newCustomer);
+
         return mapper.map(createdCustomer, CustomerResponse.class);
     }
 
