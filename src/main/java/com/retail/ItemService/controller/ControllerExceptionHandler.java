@@ -10,12 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Date;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @Data
     public class Message {
@@ -27,23 +28,23 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {NotFoundException.class})
-    public ResponseEntity<?> handleNotFoundException(Exception ex, WebRequest request) {
+    public ResponseEntity<?> handleNotFoundException(Exception ex) {
         String errorMessageDescription = ex.getMessage();
         Message errorMessage = new Message(errorMessageDescription);
-        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = {EmptyRequestException.class})
-    public ResponseEntity<?> handleEmptyBodyException(Exception ex, WebRequest request) {
+    public ResponseEntity<?> handleEmptyBodyException(Exception ex) {
         String errorMessageDescription = ex.getMessage();
         Message errorMessage = new Message(errorMessageDescription);
-        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {NotAcceptable.class})
-    public ResponseEntity<?> handleNotAccaptableException(Exception ex, WebRequest request) {
+    public ResponseEntity<?> handleNotAccaptableException(Exception ex) {
         String errorMessageDescription = ex.getMessage();
         Message errorMessage = new Message(errorMessageDescription);
-        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_ACCEPTABLE);
     }
 }
