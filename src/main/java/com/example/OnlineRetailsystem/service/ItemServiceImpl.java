@@ -58,8 +58,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Review> getItemReviews(int itemId) {
-        Item item = itemRepository.findById(itemId).get();
-        return item.getReviews();
+       Item item = getItemById(itemId);
+       return item.getReviews();
     }
 
     @Override
@@ -91,9 +91,10 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteReviewToItem(int itemId, Review review) {
+    public void deleteReviewToItem(int itemId, Long reviewID) {
         Item existingItem = getItemById(itemId);
         List<Review> itemReviews = existingItem.getReviews();
+        Review review = reviewRepository.findById(reviewID).get();
         for (Review eachReview : itemReviews){
             if(eachReview.equals(review)){
                 itemReviews.remove(eachReview);

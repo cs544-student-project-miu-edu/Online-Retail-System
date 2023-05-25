@@ -23,4 +23,8 @@ public class ItemLine {
 
     private int quantity;
     private double discountValue;
+
+    public ItemLine(Item item){
+        this.item = item;
+    }
 }

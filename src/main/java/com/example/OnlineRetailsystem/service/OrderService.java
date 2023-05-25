@@ -13,12 +13,13 @@ public interface OrderService {
 //    public void deleteOrder(int orderID);
 
 //    public void updateOrder(int orderId, Order order);
-    public Order getOrder(int orderId);
+    public Order getOrderByID(int orderId);
     public List<Order> getAllOrders();
     List<ItemLine> getOrderItemLines(int orderId);
 
     Order updateState(int orderId, OrderState orderState);
-    public ItemLine addItemLineToOrder(int orderId, ItemLine itemLine);
+    public ItemLine addItemToOrder(int orderId, int itemID);
     public ItemLine updateItemLineToOrder(int orderId, ItemLine itemLine);
-    public void getItemLineOfOrder(int orderId, ItemLine itemLine);
+    public void getItemLineOfOrder(int orderId, int itemLineID);
+    void deleteItemLineFromOrder(int orderId, int itemLineID);
 }

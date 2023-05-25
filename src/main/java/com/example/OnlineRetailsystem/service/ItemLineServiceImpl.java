@@ -27,7 +27,7 @@ public class ItemLineServiceImpl implements ItemLineService {
 
     @Override
     public ItemLine updateItemLine(int itemLineID, ItemLine itemLine) {
-        ItemLine existingItemLine = modelMapper.map(getItemLineById(itemLineID), ItemLine.class);
+        ItemLine existingItemLine = getItemLineById(itemLineID);
         existingItemLine.setItem(itemLine.getItem());
         existingItemLine.setQuantity(itemLine.getQuantity());
         existingItemLine.setDiscountValue(itemLine.getDiscountValue());
