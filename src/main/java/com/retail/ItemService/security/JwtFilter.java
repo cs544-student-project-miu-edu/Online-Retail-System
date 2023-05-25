@@ -1,12 +1,18 @@
 package com.retail.ItemService.security;
 
+import com.retail.ItemService.ResponseError.NotFoundException;
 import com.retail.ItemService.Utils.JwtUtil;
+import com.retail.ItemService.controller.ControllerExceptionHandler;
 import com.retail.ItemService.domain.Credential;
 import com.retail.ItemService.repository.CustomerRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +22,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.*;
@@ -28,6 +36,7 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
+
 
 
     @Autowired
@@ -59,8 +68,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 GrantedAuthority authority = new SimpleGrantedAuthority(String.valueOf(customerType));
                 grantedAuthoritys.add(authority);
 
-            } catch (ExpiredJwtException e) { // TODO come back here!
-                throw new BadCredentialsException("wrong token");
+            } catch (ExpiredJwtException e) {
+
+                throw new NotFoundException("Not authorized to access this resource");
             }
         }
 
@@ -76,5 +86,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
+
 }
 

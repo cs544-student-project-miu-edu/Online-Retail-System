@@ -19,7 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.crypto.SecretKey;
 
 @SpringBootApplication
-public class CustomerServiceApplication{
+public class CustomerServiceApplication implements CommandLineRunner{
     @Autowired
     CustomerRepository customerRepository;
     @Autowired
@@ -33,4 +33,35 @@ public class CustomerServiceApplication{
     public static void main(String args[]) {
         SpringApplication.run(CustomerServiceApplication.class, args);
     }
+
+    @Override
+    public void run(String... args) throws Exception {
+
+
+        SecretKey secret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        Customer buyer = new Customer();
+        buyer.setFirstName("John");
+        buyer.setLastName("Doe");
+        buyer.setEmail("buyer@example.com");
+        buyer.setUsername("meaza");
+        buyer.setPassword(passwordEncoder.encode("123"));
+        buyer.setCustomerType(CustomerType.SELLER);
+
+        customerRepository.save(buyer);
+
+        Credential credential = new Credential("meaza","123");
+        credential.setCustomerType(CustomerType.SELLER);
+        String token = authService.login(credential);
+        System.out.println(token);
+
+        Claims claims = jwtUtil.getAllClaimsFromToken(token);
+
+        System.out.println("subject" + claims.getSubject());
+        String customerType = claims.get("customerType",String.class);
+        System.out.println(customerType);
+        if(customerType.equals(String.valueOf(CustomerType.BUYER)))
+            System.out.println("succes");
+
+    }
+
 }

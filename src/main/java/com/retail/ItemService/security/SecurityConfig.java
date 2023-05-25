@@ -23,7 +23,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 public class SecurityConfig {
     @Autowired
     JwtFilter jwtFilter;
-        String roles = "SELLER";
+    String roles = "SELLER";
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -35,8 +35,9 @@ public class SecurityConfig {
         http
                 .csrf().disable().cors().and()
                 .authorizeHttpRequests()
-//                .requestMatchers("/authenticate/**").hasAuthority(roles)
-                 .anyRequest()
+                .requestMatchers("/login").permitAll()
+                .requestMatchers("/authenticate/").hasAuthority(roles)
+                .anyRequest()
                 .permitAll()
                 .and()
                 .sessionManagement()
