@@ -22,4 +22,16 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "buyerID")
     private Customer buyer;
+
+    public Review() {
+    }
+
+    public Review(String title, String description, int stars,Customer buyer) {
+        this.title = title;
+        this.description = description;
+        this.stars = stars;
+        this.date = LocalDateTime.now();
+        this.buyer = buyer;
+    }
+
 }
