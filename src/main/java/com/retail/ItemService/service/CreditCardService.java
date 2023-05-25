@@ -13,12 +13,13 @@ import com.retail.ItemService.repository.CustomerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Service
 @Transactional
 public class CreditCardService {
     @Autowired
