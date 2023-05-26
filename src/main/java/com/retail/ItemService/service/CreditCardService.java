@@ -42,7 +42,7 @@ public class CreditCardService {
     }
 
     public List<CreditCardResponse> getCustomersCreditCards(int customerID) {
-        List<CreditCard> cards = creditCardRepository.findById(customerID);
+        List<CreditCard> cards = creditCardRepository.getCreditCardByCustomer(customerID);
         return cards.stream().map(card -> mapper.map(card, CreditCardResponse.class)).toList();
     }
 
