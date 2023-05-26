@@ -86,17 +86,5 @@ public class Customer {
             throw new NotFoundException("Customer doesnt have this address");
         }
     }
-    //TODO - mesi
-
-    // Sets the billing address and shipping addresses for the customer
-
-
-//    public List<Order> getOrders() {
-//        return orderList;
-//    }
-//
-//    public void setOrders(List<Order> orders) {
-//        this.orderList = orders;
-//    }
 
 }

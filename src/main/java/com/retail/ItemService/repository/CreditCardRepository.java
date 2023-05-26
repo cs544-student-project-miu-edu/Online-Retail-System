@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CreditCardRepository extends JpaRepository<CreditCard, Integer> {
-    @Query("SELECT c.creditCards FROM Customer c WHERE c.id = :id")
-    List<CreditCard> findById(@Param("id") int customerId);
-
     @Query("SELECT c.creditCards FROM Customer c WHERE c.id = :customerID")
     List<CreditCard> getCreditCardByCustomer(@Param("customerID") int customerID);
 }
