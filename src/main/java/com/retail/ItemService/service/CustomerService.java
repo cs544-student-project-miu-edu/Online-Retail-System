@@ -1,5 +1,6 @@
 package com.retail.ItemService.service;
 
+import com.retail.ItemService.logging.LoggerUtil;
 import com.retail.ItemService.ResponseError.NotFoundException;
 import com.retail.ItemService.Utils.HelperFunction;
 import com.retail.ItemService.domain.Address;
@@ -10,11 +11,11 @@ import com.retail.ItemService.dto.CustomerResponse;
 import com.retail.ItemService.form.CreateCustomerForm;
 import com.retail.ItemService.form.UpdateCustomerForm;
 import com.retail.ItemService.repository.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@Slf4j
 public class CustomerService {
     @Autowired
     private ModelMapper mapper;
@@ -30,12 +32,13 @@ public class CustomerService {
     private CustomerRepository customerRepository;
 
     public CustomerResponse createCustomer(CreateCustomerForm customer) {
+        LoggerUtil.logInfo("Creating customer: {}", customer.getFirstName());
         Address billingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.BILLINGADDRESS);
         Address defaultShippingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.SHIPPINGADDRESS);
         Customer newCustomer = new Customer(customer.getFirstName(), customer.getLastName(), customer.getEmail(), billingAddress, defaultShippingAddress);
         newCustomer.setCredintials(new Credintials(customer.getUsername(),customer.getPassword()));
         Customer createdCustomer = customerRepository.save(newCustomer);
-
+        LoggerUtil.logInfo("Customer created: {}", createdCustomer);
         return mapper.map(createdCustomer, CustomerResponse.class);
     }
 
@@ -45,6 +48,7 @@ public class CustomerService {
     }
 
     public CustomerResponse findCustomerById(int id) {
+        log.debug("Finding customer by ID: {}", id);
         Customer customer = findCustomerId(id);
         return mapper.map(customer, CustomerResponse.class);
     }
@@ -63,8 +67,10 @@ public class CustomerService {
     }
 
     public CustomerResponse updateCustomer(int id, UpdateCustomerForm form) {
+        LoggerUtil.logInfo("Updating customer with ID: {}", id);
         Optional<Customer> customer = customerRepository.findById(id);
         if (!customer.isPresent()) {
+            LoggerUtil.logError("Customer with ID {} not found", id);
             throw new NotFoundException("Customer not found");
         }
         Customer updatedCustomer = new Customer(form.getFirstName(), form.getLastName(), form.getEmail());
