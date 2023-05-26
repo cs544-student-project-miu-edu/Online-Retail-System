@@ -34,6 +34,11 @@ public class ItemServiceTest {
         public ItemService itemService() {
             return new ItemService();
         }
+
+        @Bean
+        public ModelMapper modelMapper(){
+            return new ModelMapper();
+        }
     }
 
     @Autowired
@@ -42,7 +47,7 @@ public class ItemServiceTest {
     @MockBean
     private ItemRepository itemRepository;
 
-    @MockBean
+    @Autowired
     private ModelMapper modelMapper;
 
     @Test
@@ -80,22 +85,29 @@ public class ItemServiceTest {
         assertEquals(found.getItemID(),itemID);
     }
 
-//    @Test
-//    public void whenItemIdAndUpdateFormThenItemShouldBeUpdated(){
-//        int itemID = 1;
-//        LeafItem singleItem = new LeafItem("Leaf Item","leaf item description",10.0 ,"11111111",5);
-//        singleItem.setItemID(itemID);
-//
-//        LeafItem updateItem = new LeafItem("update Item","update leaf item description",10.0 ,"11111111",5);
-//
-//        UpdateItemForm updateItemForm = modelMapper.map(updateItem, UpdateItemForm.class);
-//        Mockito.when(itemRepository.findById(itemID)).thenReturn(Optional.of(singleItem));
-//        Mockito.when(itemRepository.save(Mockito.any(Item.class))).thenReturn(singleItem);
-//
-//        Item found = itemService.updateItem(itemID,updateItemForm);
-//        assertNotNull(found);
-//        assertEquals(found,updateItemForm);
-//    }
+    @Test
+    public void whenItemIdAndUpdateFormThenItemShouldBeUpdated(){
+        int itemID = 1;
+        UpdateItemForm updateItemForm = new UpdateItemForm();
+        LeafItem singleItem = new LeafItem("Leaf Item","leaf item description",10.0 ,"11111111",5);
+        singleItem.setItemID(itemID);
+
+        LeafItem updateItem = new LeafItem("update Item","update leaf item description",10.0 ,"11111111",5);
+
+        updateItemForm.setName(updateItem.getName());
+        updateItemForm.setBarcodeNumber(updateItem.getBarcodeNumber());
+        updateItemForm.setPrice(updateItem.getPrice());
+        updateItemForm.setDescription(updateItem.getDescription());
+        updateItemForm.setQuantity(updateItem.getQuantity());
+
+        Mockito.when(itemRepository.findById(itemID)).thenReturn(Optional.of(singleItem));
+        Mockito.when(itemRepository.save(Mockito.any(Item.class))).thenReturn(singleItem);
+
+        updateItemForm = modelMapper.map(itemService.updateItem(itemID,updateItemForm), UpdateItemForm.class);
+
+        assertNotNull(updateItemForm);
+        assertEquals(updateItemForm,updateItemForm);
+    }
     @Test
     public void whenInvalidItemIDThenItemShouldNotBeFound(){
         int itemID = 2;
