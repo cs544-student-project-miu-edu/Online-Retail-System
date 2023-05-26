@@ -3,11 +3,14 @@ package com.retail.ItemService.controller;
 import com.retail.ItemService.domain.Review;
 import com.retail.ItemService.dto.ReviewResponse;
 import com.retail.ItemService.form.ReviewForm;
+import com.retail.ItemService.security.UserDetail;
 import com.retail.ItemService.service.ReviewService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +29,8 @@ public class ReviewController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ReviewResponse createReview(@PathVariable int itemID, @RequestBody @Valid ReviewForm form) {
-        return reviewService.createReview(itemID, form);
+        UserDetail userDetails = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return reviewService.createReview(itemID, userDetails.getId(), form);
     }
 
     @GetMapping

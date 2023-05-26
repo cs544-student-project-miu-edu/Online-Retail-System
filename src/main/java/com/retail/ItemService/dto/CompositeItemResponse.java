@@ -1,24 +1,20 @@
 package com.retail.ItemService.dto;
 
+import com.retail.ItemService.domain.CompositeItem;
 import com.retail.ItemService.domain.Item;
+import com.retail.ItemService.domain.LeafItem;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class CompositeItemResponse extends Item {
+public class CompositeItemResponse extends ItemResponse {
     private List<ItemResponse> nestedItems;
 
+
+
     // Constructors, getters, and setters
-
-    public void addSubItem(ItemResponse item) {
-        nestedItems.add(item);
-    }
-
-    public void removeSubItem(ItemResponse item) {
-        nestedItems.remove(item);
-    }
 
     @Override
     public double getPrice() {

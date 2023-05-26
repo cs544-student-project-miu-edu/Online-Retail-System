@@ -10,6 +10,7 @@ import com.retail.ItemService.service.ItemService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +20,13 @@ import java.util.List;
 /*
  * @Todo
  *   change dto
+ *   search need to be added
  * */
 public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    @PreAuthorize("hasAnyAuthority('SELLER')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Item createItem(@RequestBody @Valid CreateItemForm form) {
@@ -32,13 +35,14 @@ public class ItemController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Item> getAllItems() {
+    public List<ItemResponse> getAllItems() {
         return itemService.getItems();
     }
 
+    @PreAuthorize("hasAnyAuthority('SELLER')")
     @PutMapping("/{itemID}")
     @ResponseStatus(HttpStatus.OK)
-    public Item updateItem(@PathVariable int itemID, @Valid @RequestBody UpdateItemForm form) {
+    public ItemResponse updateItem(@PathVariable int itemID, @Valid @RequestBody UpdateItemForm form) {
         return itemService.updateItem(itemID, form);
     }
 
@@ -48,6 +52,7 @@ public class ItemController {
         return itemService.getItemById(itemID);
     }
 
+    @PreAuthorize("hasAnyAuthority('SELLER')")
     @DeleteMapping("/{itemID}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteItem(@PathVariable int itemID) {

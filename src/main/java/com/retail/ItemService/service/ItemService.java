@@ -42,8 +42,8 @@ public class ItemService {
         return itemRepository.save(item);
     }
 
-    public List<Item> getItems() {
-        return itemRepository.findAll();
+    public List<ItemResponse> getItems() {
+        return itemRepository.findAll().stream().map(item -> mapper.map(item, ItemResponse.class)).toList();
     }
 
     public Item getItemById(int itemID) {
@@ -51,18 +51,22 @@ public class ItemService {
                 .orElseThrow(() -> new NotFoundException("Item not found with ID: " + itemID));
     }
 
+    public ItemResponse getItemByIdDto(int itemID) {
+        return mapper.map(getItemById(itemID), ItemResponse.class);
+    }
+
     public void saveAllItems(List<Item> items) {
         itemRepository.saveAll(items);
     }
 
-    public Item updateItem(int itemID, UpdateItemForm form) {
+    public ItemResponse updateItem(int itemID, UpdateItemForm form) {
         Item existingItem = getItemById(itemID);
         existingItem.setName(form.getName());
         existingItem.setDescription(form.getDescription());
         existingItem.setPrice(form.getPrice());
         existingItem.setBarcodeNumber(form.getBarcodeNumber());
         existingItem.setQuantity(form.getQuantity());
-        return itemRepository.save(existingItem);
+        return mapper.map(itemRepository.save(existingItem), ItemResponse.class);
     }
 
     public void deleteItem(int itemID) {

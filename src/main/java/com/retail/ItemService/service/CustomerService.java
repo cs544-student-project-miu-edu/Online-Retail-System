@@ -1,5 +1,7 @@
 package com.retail.ItemService.service;
 
+import com.retail.ItemService.ResponseError.BadCredential;
+import com.retail.ItemService.ResponseError.NotAcceptable;
 import com.retail.ItemService.ResponseError.NotFoundException;
 import com.retail.ItemService.Utils.HelperFunction;
 import com.retail.ItemService.domain.Address;
@@ -10,10 +12,15 @@ import com.retail.ItemService.dto.CustomerResponse;
 import com.retail.ItemService.form.CreateCustomerForm;
 import com.retail.ItemService.form.UpdateCustomerForm;
 import com.retail.ItemService.repository.CustomerRepository;
+import com.retail.ItemService.security.UserDetail;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,18 +29,26 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class CustomerService {
+public class CustomerService implements UserDetailsService {
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private CustomerRepository customerRepository;
 
     public CustomerResponse createCustomer(CreateCustomerForm customer) {
+        if (customerRepository.findCustomerByUsername(customer.getUsername()).isPresent()) {
+            throw new NotAcceptable("Username already taken");
+        }
         Address billingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.BILLINGADDRESS);
         Address defaultShippingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.SHIPPINGADDRESS);
         Customer newCustomer = new Customer(customer.getFirstName(), customer.getLastName(), customer.getEmail(), billingAddress, defaultShippingAddress);
-        newCustomer.setCredintials(new Credintials(customer.getUsername(),customer.getPassword()));
+//        newCustomer.setCredintials(new Credintials(customer.getUsername(),customer.getPassword()));
+        newCustomer.setPassword(passwordEncoder.encode(customer.getPassword()));
+        newCustomer.setUsername(customer.getUsername());
         Customer createdCustomer = customerRepository.save(newCustomer);
 
         return mapper.map(createdCustomer, CustomerResponse.class);
@@ -79,4 +94,13 @@ public class CustomerService {
         return mapper.map(savedCustomer, CustomerResponse.class);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Customer> optionalCustomer = customerRepository.findCustomerByUsername(username);
+        if (!optionalCustomer.isPresent()) {
+            throw new BadCredential("Customer not found");
+        }
+        return UserDetail.build(optionalCustomer.get());
+
+    }
 }

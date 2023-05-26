@@ -4,12 +4,8 @@ public class ReviewForm {
     private String title;
     private String description;
     private int stars;
-    private int customerID;
 
 
-    public int getCustomerID() {
-        return customerID;
-    }
 
     public String getTitle() {
         return title;

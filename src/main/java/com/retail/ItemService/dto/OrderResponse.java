@@ -2,6 +2,7 @@ package com.retail.ItemService.dto;
 
 
 import com.retail.ItemService.domain.ItemLine;
+import com.retail.ItemService.domain.Order;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,11 @@ public class OrderResponse {
     private AddressResponse shippingAddress;
 
 
-    private List<ItemLine> lineItems = new ArrayList<>();
+    private List<ItemLineResponse> lineItems = new ArrayList<>();
 
-
+    public OrderResponse(Order order) {
+        this.id = order.getId();
+        this.shippingAddress = new AddressResponse(order.getShippingAddress());
+        this.lineItems = order.getLineItems().stream().map(ItemLineResponse::new).toList();
+    }
 }

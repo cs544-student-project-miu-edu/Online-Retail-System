@@ -27,7 +27,7 @@ public class BillingAddressService {
         if (!optionalAddress.isPresent()) {
             throw new NotFoundException("Billing address not found");
         }
-        return mapper.map(optionalAddress.get(), AddressResponse.class);
+        return new AddressResponse(optionalAddress.get());
     }
 
     public AddressResponse updateCustomerBillingAddress(int customerID, AddressForm form) {
@@ -41,6 +41,6 @@ public class BillingAddressService {
         HelperFunction.copyNonNullProperties(updatingValues, existingAddress);
         existingAddress.setId(savedID);
         Address savedAddress = addressRepository.save(existingAddress);
-        return mapper.map(savedAddress, AddressResponse.class);
+        return new AddressResponse(savedAddress);
     }
 }

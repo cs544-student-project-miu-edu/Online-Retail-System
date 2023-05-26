@@ -1,5 +1,6 @@
 package com.retail.ItemService.dto;
 
+import com.retail.ItemService.domain.Customer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class CustomerResponse {
 
     private int id;
@@ -25,6 +25,16 @@ public class CustomerResponse {
 
     private List<CreditCardResponse> creditCards = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyer")
-    List<ReviewResponse> reviewResponses = new ArrayList<>();
+    public CustomerResponse() {
+    }
+
+    public CustomerResponse(Customer customer) {
+        this.id = customer.getId();
+        this.firstName = customer.getFirstName();
+        this.lastName = customer.getLastName();
+        this.email = customer.getEmail();
+        this.billingAddress = new AddressResponse(customer.getBillingAddress());
+        this.shippingAddresses = customer.getShippingAddresses().stream().map(AddressResponse::new).toList();
+        this.creditCards = customer.getCreditCards().stream().map(CreditCardResponse::new).toList();
+    }
 }

@@ -15,6 +15,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @Table(name = "customers")
+@SecondaryTable(name = "credentials")
 public class Customer {
 
     @Id
@@ -23,6 +24,10 @@ public class Customer {
     private String firstName;
     private String lastName;
     private String email;
+    @Column(table = "credentials")
+    private String username;
+    @Column(table = "credentials")
+    private String password;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "billingAddressID")
@@ -52,9 +57,6 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     private CustomerType customerType;
 
-    @Embedded
-    private Credintials credintials;
-
     public Customer() {
     }
 
@@ -64,9 +66,6 @@ public class Customer {
         this.email = email;
     }
 
-    public void setCredintials(Credintials credintials){
-        this.credintials = credintials;
-    }
 
     public Customer(String firstName, String lastName, String email, Address billingAddress, Address defaultShippingAddress) {
         this.firstName = firstName;

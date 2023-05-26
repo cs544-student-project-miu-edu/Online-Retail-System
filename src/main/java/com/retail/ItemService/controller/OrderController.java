@@ -7,6 +7,7 @@ import com.retail.ItemService.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +19,9 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/customers/{customerID}/order")
+    @PreAuthorize("hasAnyAuthority(#customerID)")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponse createOrder(@RequestBody @Valid OrderForm form, @PathVariable int customerID) {
+    public OrderResponse createOrder(@RequestBody @Valid OrderForm form, @PathVariable("customerID") int customerID) {
         return orderService.createOrder(form, customerID);
     }
 
@@ -30,23 +32,27 @@ public class OrderController {
     }
 
     @PutMapping("/customers/{customerID}/order")
+    @PreAuthorize("hasAnyAuthority(#customerID)")
     @ResponseStatus(HttpStatus.OK)
-    public void placeOrder(@PathVariable int customerID) {
+    public void placeOrder(@PathVariable("customerID") int customerID) {
         orderService.placeOrder(customerID);
     }
 
     @DeleteMapping("/customers/{customerID}/order")
+    @PreAuthorize("hasAnyAuthority(#customerID)")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteOrder(@PathVariable int customerID) {
+    public void deleteOrder(@PathVariable("customerID") int customerID) {
         orderService.deleteOrder(customerID);
     }
 
+    @PreAuthorize("hasRole('SELLER')")
     @GetMapping("/order")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderResponse> getAllOrder() {
         return orderService.getAllOrder();
     }
 
+    @PreAuthorize("hasRole('SELLER')")
     @GetMapping("/order/{orderID}")
     @ResponseStatus(HttpStatus.OK)
     public OrderResponse getOrderByID(@PathVariable int orderID) {

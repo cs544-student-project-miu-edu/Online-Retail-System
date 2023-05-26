@@ -59,11 +59,11 @@ public class OrderService {
             }
         }
         itemService.saveAllItems(orderedItems);
-        return mapper.map(orderRepository.save(order), OrderResponse.class);
+        return new OrderResponse(orderRepository.save(order));
     }
 
     public List<OrderResponse> getAllOrderByCustomerID(int customerID) {
-        return orderRepository.findAllOrderByCustomer(customerID).stream().map(order -> mapper.map(order, OrderResponse.class)).toList();
+        return orderRepository.findAllOrderByCustomer(customerID).stream().map(OrderResponse::new).toList();
     }
 
     public void placeOrder(int customerID) {
@@ -85,11 +85,12 @@ public class OrderService {
     }
 
     public OrderResponse getOrderByIDwithDto(int orderID) {
-        return mapper.map(getOrderByID(orderID), OrderResponse.class);
+        return new OrderResponse(getOrderByID(orderID));
+//        return mapper.map(getOrderByID(orderID), OrderResponse.class);
     }
 
     public List<OrderResponse> getAllOrder() {
-        return orderRepository.findAll().stream().map(order -> mapper.map(order, OrderResponse.class)).toList();
+        return orderRepository.findAll().stream().map(OrderResponse::new).toList();
     }
 
     public void deleteOrder(int customerID) {

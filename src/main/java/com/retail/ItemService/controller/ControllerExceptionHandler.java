@@ -1,5 +1,6 @@
 package com.retail.ItemService.controller;
 
+import com.retail.ItemService.ResponseError.BadCredential;
 import com.retail.ItemService.ResponseError.EmptyRequestException;
 import com.retail.ItemService.ResponseError.NotAcceptable;
 import com.retail.ItemService.ResponseError.NotFoundException;
@@ -32,6 +33,13 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         String errorMessageDescription = ex.getMessage();
         Message errorMessage = new Message(errorMessageDescription);
         return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {BadCredential.class})
+    public ResponseEntity<?> handleBadCredException(Exception ex) {
+        String errorMessageDescription = ex.getMessage();
+        Message errorMessage = new Message(errorMessageDescription);
+        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = {EmptyRequestException.class})

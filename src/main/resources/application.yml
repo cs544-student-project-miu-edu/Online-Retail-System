@@ -1,19 +1,22 @@
-  spring:
-    security:
-      user:
-        name: user
-        password: pass
-    datasource:
-      url: jdbc:hsqldb:hsql://localhost:9003/trainingdb
-      username: SA
-      password:
-      driver-class-name: org.hsqldb.jdbc.JDBCDriver
-    jpa:
+spring:
+  security:
+    user:
+      name: user
+      password: pass
+  datasource:
+    url: jdbc:hsqldb:hsql://localhost:9003/trainingdb
+    username: SA
+    password:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: create
-      show-sql: true
-      properties:
-        hibernate:
-          format_sql: true
-  server:
-    port: 9000
+        format_sql: true
+server:
+  port: 9000
+retail:
+  jwtSecret: eyJhbGciOiJIUzUxMiJ9eyJzdWIiOiJUZXN0IFVzZXIiLCJleHAiOjE2MzI3OTk3MTB98ZUjYmXsJ3nF4mdpypt8mJ8JABtoj2N9D7EP4HP8JdK3O6TQv9zi0G9r3G8NSRXc7NcME6og9XrOr0M7HVJ3A
+  jwtExpirationMS: 86400000

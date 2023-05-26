@@ -27,9 +27,9 @@ public class ReviewService {
     @Autowired
     private ModelMapper mapper;
 
-    public ReviewResponse createReview(int itemID, ReviewForm form) {
+    public ReviewResponse createReview(int itemID, int cunstomerID, ReviewForm form) {
         Item item = itemService.getItemById(itemID);
-        Customer customer = customerService.findCustomerId(form.getCustomerID());
+        Customer customer = customerService.findCustomerId(cunstomerID);
         Review review = new Review(form.getTitle(), form.getDescription(), form.getStars(), customer);
         item.getReviews().add(review);
         reviewRepository.saveAll(item.getReviews());
