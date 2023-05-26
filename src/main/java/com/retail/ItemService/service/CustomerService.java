@@ -2,16 +2,15 @@ package com.retail.ItemService.service;
 
 import com.retail.ItemService.ResponseError.BadCredential;
 import com.retail.ItemService.ResponseError.NotAcceptable;
-import com.retail.ItemService.logging.LoggerUtil;
 import com.retail.ItemService.ResponseError.NotFoundException;
 import com.retail.ItemService.Utils.HelperFunction;
 import com.retail.ItemService.domain.Address;
 import com.retail.ItemService.domain.AddressType;
 import com.retail.ItemService.domain.Customer;
-import com.retail.ItemService.domain.Credintials;
 import com.retail.ItemService.dto.CustomerResponse;
 import com.retail.ItemService.form.CreateCustomerForm;
 import com.retail.ItemService.form.UpdateCustomerForm;
+import com.retail.ItemService.logging.LoggerUtil;
 import com.retail.ItemService.repository.CustomerRepository;
 import com.retail.ItemService.security.UserDetail;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +46,7 @@ public class CustomerService implements UserDetailsService {
             throw new NotAcceptable("Username already taken");
         }
         LoggerUtil.logInfo("Creating customer: {}", customer.getFirstName());
+
         Address billingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.BILLINGADDRESS);
         Address defaultShippingAddress = new Address(customer.getBillingAddressForm().getStreet(), customer.getBillingAddressForm().getCity(), customer.getBillingAddressForm().getState(), customer.getBillingAddressForm().getZipCode(), AddressType.SHIPPINGADDRESS);
         Customer newCustomer = new Customer(customer.getFirstName(), customer.getLastName(), customer.getEmail(), billingAddress, defaultShippingAddress);

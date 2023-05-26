@@ -1,8 +1,6 @@
 package com.retail.ItemService.domain;
 
-import jakarta.persistence.Embeddable;
-
-@Embeddable
+//@Embeddable
 public class Credintials {
     String username;
     String password;

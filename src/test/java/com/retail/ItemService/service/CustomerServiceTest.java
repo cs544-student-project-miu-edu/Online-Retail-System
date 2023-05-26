@@ -59,7 +59,7 @@ public class CustomerServiceTest {
         Address defaultShippingAddress = new Address("Street 2", "City", "State", "12345", AddressType.SHIPPINGADDRESS);
 
         Customer newCustomer = new Customer("John", "Doe", "johndoe@example.com", billingAddress, defaultShippingAddress);
-        newCustomer.setCredintials(new Credintials("johndoe", "password"));
+       // newCustomer.setCredintials(new Credintials("johndoe", "password"));
 
         CustomerResponse expectedResponse = new CustomerResponse();
         when(mockMapper.map(any(Customer.class), eq(CustomerResponse.class))).thenReturn(expectedResponse);
